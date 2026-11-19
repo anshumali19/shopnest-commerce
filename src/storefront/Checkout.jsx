@@ -166,7 +166,7 @@ export function ThankYou() {
       </div>
       <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
         <Link to="/collections/all" className="rounded-lg px-6 py-3 text-sm font-semibold text-white" style={{ background: 'var(--a)' }}>Continue shopping</Link>
-        <Link to={`/admin/orders/${o.id}`} className="rounded-lg border border-slate-300 px-6 py-3 text-sm font-semibold">See this order in the admin →</Link>
+        <Link to="/account" onClick={() => sessionStorage.setItem('shopnest-customer', o.email.toLowerCase())} className="rounded-lg border border-slate-300 px-6 py-3 text-sm font-semibold">View my orders</Link>
       </div>
     </div>
   );

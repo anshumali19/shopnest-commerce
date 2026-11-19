@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Routes, Route, Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingBag, Search, Menu, X, Minus, Plus, Trash2, LayoutDashboard, Instagram, Twitter, Facebook } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, Minus, Plus, Trash2, User, Instagram, Twitter, Facebook } from 'lucide-react';
 import { useDB } from '../kit/db';
 import { useToast } from '../kit/ui';
 import { money2 } from '../kit/format';
@@ -9,6 +9,7 @@ import Home from './Home';
 import { Collection, Product, SearchPage } from './Catalog';
 import { CartPage, Checkout, ThankYou } from './Checkout';
 import { Page, Blog, Post } from './Content';
+import { AccountLogin, Account } from './Account';
 
 const CartCtx = createContext(null);
 export const useCart = () => useContext(CartCtx);
@@ -116,6 +117,7 @@ function Header() {
               <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} onBlur={() => setSearch(false)} placeholder="Search products…" className="h-9 w-44 rounded-full border px-4 text-sm outline-none sm:w-60" />
             </form>
           ) : <button onClick={() => setSearch(true)} aria-label="Search" className="cursor-pointer"><Search size={20} /></button>}
+          <Link to={sessionStorage.getItem('shopnest-customer') ? '/account' : '/account/login'} aria-label="Account"><User size={20} /></Link>
           <button onClick={() => setOpen(true)} className="relative cursor-pointer" aria-label="Cart">
             <ShoppingBag size={21} />
             {count > 0 && <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-bold text-white" style={{ background: 'var(--a)' }}>{count}</span>}
@@ -165,7 +167,6 @@ function Footer() {
 export default function Storefront() {
   const { db } = useDB();
   const loc = useLocation();
-  const preview = new URLSearchParams(loc.search).get('preview') || window.self !== window.top;
   useEffect(() => { window.scrollTo(0, 0); }, [loc.pathname]);
   useEffect(() => { document.title = `${db.settings.storeName} — ${db.settings.tagline}`; }, [db.settings]);
   return (
@@ -184,16 +185,13 @@ export default function Storefront() {
             <Route path="pages/:handle" element={<Page />} />
             <Route path="blogs/journal" element={<Blog />} />
             <Route path="blogs/journal/:handle" element={<Post />} />
+            <Route path="account/login" element={<AccountLogin />} />
+            <Route path="account" element={<Account />} />
             <Route path="*" element={<div className="py-32 text-center"><h1 className="text-3xl font-semibold">Page not found</h1><Link to="/" className="mt-4 inline-block underline">Back home</Link></div>} />
           </Routes>
         </main>
         <Footer />
         <CartDrawer />
-        {!preview && (
-          <Link to="/admin" className="fixed bottom-5 left-5 z-40 flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2.5 text-xs font-semibold text-white shadow-xl hover:bg-slate-800">
-            <LayoutDashboard size={15} /> Open store admin
-          </Link>
-        )}
       </div>
     </CartProvider>
   );
