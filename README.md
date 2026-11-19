@@ -2,7 +2,7 @@
 
 A hosted-store platform demo (Shopify-style): a complete storefront plus a CMS/admin that controls it.
 
-**Live demo:** _LIVE_URL_
+**Live demo:** https://shopnest-commerce-liard.vercel.app · Admin: https://shopnest-commerce-liard.vercel.app/admin
 
 > Demo data is generated in the browser and saved to `localStorage`, so every visitor gets their own sandbox. Create, edit and delete freely — use **Reset demo data** to start over.
 
